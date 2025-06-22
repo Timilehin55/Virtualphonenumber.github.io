@@ -1,0 +1,230 @@
+06.22 7:03 AM
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Temporary Phone Number</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 600px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 2rem;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #555;
+        }
+        select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        button {
+            background: #4a6cf7;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #3a5be0;
+        }
+        .number-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        .number-box {
+            flex: 1;
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border: 1px solid #eee;
+        }
+        .copy-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .copy-btn:hover {
+            background: #5a6268;
+        }
+        .services {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        .service {
+            text-align: center;
+        }
+        .service i {
+            font-size: 2rem;
+            color: #4a6cf7;
+            margin-bottom: 0.5rem;
+        }
+        .service button {
+            width: 100%;
+            padding: 0.6rem;
+        }
+        #sms-content, #otp-content, #voice-content {
+            margin-top: 1rem;
+            padding: 0.5rem;
+            background: #f8f9fa;
+            border-radius: 5px;
+            min-height: 60px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Temporary Phone Number</h1>
+        <div class="form-group">
+            <label for="country">Select Country</label>
+            <select id="country">
+                <option value="US">United States</option>
+                <option value="UK">United Kingdom</option>
+                <option value="CA">Canada</option>
+                <option value="AU">Australia</option>
+            </select>
+        </div>
+        <button id="generate">Get Temporary Number</button>
+        <div class="number-container">
+            <div id="number-display" class="number-box"></div>
+            <button id="copy-btn" class="copy-btn">Copy</button>
+        </div>
+        <div class="services">
+            <div class="service">
+                <i class="fas fa-sms"></i>
+                <button id="check-sms">Check SMS</button>
+                <div id="sms-content"></div>
+            </div>
+            <div class="service">
+                <i class="fas fa-key"></i>
+                <button id="get-otp">Get OTP</button>
+                <div id="otp-content"></div>
+            </div>
+            <div class="service">
+                <i class="fas fa-phone-alt"></i>
+                <button id="voice-call">Request Voice Call</button>
+                <div id="voice-content"></div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const countryCodes = {
+            'US': '+1 555-',
+            'UK': '+44 20 ',
+            'CA': '+1 613-',
+            'AU': '+61 2 '
+        };
+
+        document.getElementById('generate').addEventListener('click', generateNumber);
+
+        function generateNumber() {
+            const country = document.getElementById('country').value;
+            let number;
+            switch(country) {
+                case 'US':
+                    number = countryCodes.US + Math.floor(Math.random()*10000).toString().padStart(4, '0');
+                    break;
+                case 'UK':
+                    number = countryCodes.UK + Math.floor(Math.random()*10000).toString().padStart(4, '0');
+                    break;
+                case 'CA':
+                    number = countryCodes.CA + Math.floor(Math.random()*10000).toString().padStart(4, '0');
+                    break;
+                case 'AU':
+                    number = countryCodes.AU + Math.floor(Math.random()*10000).toString().padStart(4, '0');
+                    break;
+                default:
+                    number = 'Unknown';
+            }
+            document.getElementById('number-display').textContent = number;
+            document.getElementById('sms-content').textContent = '';
+            document.getElementById('otp-content').textContent = '';
+            document.getElementById('voice-content').textContent = '';
+        }
+
+        document.getElementById('copy-btn').addEventListener('click', function() {
+            const number = document.getElementById('number-display').textContent;
+            if (!number) {
+                alert('Generate a number first!');
+                return;
+            }
+            navigator.clipboard.writeText(number).then(() => {
+                alert('Copied to clipboard!');
+            });
+        });
+
+        document.getElementById('check-sms').addEventListener('click', function() {
+            const number = document.getElementById('number-display').textContent;
+            if (!number) {
+                alert('Generate a number first!');
+                return;
+            }
+            const messages = [
+                'Your verification code is 1234',
+                'Welcome to the service!',
+                'Your OTP is 5678'
+            ];
+            const randomMsg = messages[Math.floor(Math.random()*messages.length)];
+            document.getElementById('sms-content').textContent = randomMsg;
+        });
+
+        document.getElementById('get-otp').addEventListener('click', function() {
+            const number = document.getElementById('number-display').textContent;
+            if (!number) {
+                alert('Generate a number first!');
+                return;
+            }
+            const otp = Math.floor(Math.random()*1000000).toString().padStart(6, '0');
+            document.getElementById('otp-content').textContent = `Your OTP is: ${otp}`;
+        });
+
+        document.getElementById('voice-call').addEventListener('click', function() {
+            const number = document.getElementById('number-display').textContent;
+            if (!number) {
+                alert('Generate a number first!');
+                return;
+            }
+            document.getElementById('voice-content').textContent = `Call connected to ${number}`;
+        });
+    </script>
+</body>
+</html>
+
+
